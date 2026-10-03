@@ -1,0 +1,15 @@
+/* Real local PDF.js library/worker parse and raster-render test. No CDN is used. */
+const assert=require('assert'),path=require('path'),fs=require('fs');
+const root=path.resolve(__dirname,'..'),lib=require(root+'/assets/pdfjs/pdf.min.js');
+function makePDF(){
+ const objects=['<< /Type /Catalog /Pages 2 0 R >>','<< /Type /Pages /Kids [3 0 R 4 0 R] /Count 2 >>','<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 300] /Resources << /Font << /F1 5 0 R >> >> /Contents 6 0 R >>','<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 300] /Resources << /Font << /F1 5 0 R >> >> /Contents 7 0 R >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>'];
+ for(const text of ['Offline PDF study test','Second page search target']){const content=`BT /F1 16 Tf 30 220 Td (${text}) Tj ET`;objects.push(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`)}
+ let data='%PDF-1.4\n',offsets=[0];for(let i=0;i<objects.length;i++){offsets.push(Buffer.byteLength(data));data+=`${i+1} 0 obj\n${objects[i]}\nendobj\n`};const start=Buffer.byteLength(data);data+=`xref\n0 ${objects.length+1}\n0000000000 65535 f \n`+offsets.slice(1).map(x=>String(x).padStart(10,'0')+' 00000 n \n').join('')+`trailer\n<< /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${start}\n%%EOF`;return new Uint8Array(Buffer.from(data));
+}
+(async()=>{
+ assert.equal(lib.version,'3.11.174');lib.GlobalWorkerOptions.workerSrc=root+'/assets/pdfjs/pdf.worker.min.js';
+ const doc=await lib.getDocument({data:makePDF(),standardFontDataUrl:root+'/assets/pdfjs/standard_fonts/',cMapUrl:root+'/assets/pdfjs/cmaps/',cMapPacked:true,useSystemFonts:false,disableFontFace:true,isEvalSupported:false}).promise;
+ assert.equal(doc.numPages,2);assert((await (await doc.getPage(1)).getTextContent()).items.some(x=>x.str.includes('Offline PDF study test')));assert((await (await doc.getPage(2)).getTextContent()).items.some(x=>x.str.includes('search target')));
+ let raster=false;try{const canvasLib=require('/opt/codex/runtimes/cua/lib/node_modules/@napi-rs/canvas');const page=await doc.getPage(1),viewport=page.getViewport({scale:1.5}),canvas=canvasLib.createCanvas(viewport.width,viewport.height),ctx=canvas.getContext('2d');await page.render({canvasContext:ctx,viewport}).promise;const pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data;assert(pixels.some((x,i)=>i%4!==3&&x<100),'PDF page contains actual rendered text pixels');raster=true;fs.writeFileSync('/tmp/study-pwa-pdf-test.png',canvas.toBuffer('image/png'))}catch(error){if(!error.message.includes('Cannot find module'))throw error}
+ await doc.destroy();console.log('PASS: pinned local PDF.js and worker parse two pages and extract searchable text'+(raster?', and rasterize text using local standard-font assets.':'. Raster test requires an available canvas implementation.'));
+})().catch(error=>{console.error(error);process.exitCode=1});

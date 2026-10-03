@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<title>Personal Study Library — Unified Study Modules</title>
+
+<meta name="theme-color" content="#3457d5">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
+<link rel="stylesheet" href="./css/app.css">
+<link rel="stylesheet" href="./css/pwa.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar"><div class="topbar-inner"><div class="top-title" id="topTitle">My Study Library</div><div class="status-row"><span class="badge" id="networkBadge">Offline</span><span class="badge save-badge saved" id="saveBadge">Saved locally</span></div><button class="kebab" onclick="openAppMenu()" aria-label="Library settings and actions">⋯</button></div></header>
+  <main class="main" id="main"></main>
+  <nav class="bottom-nav" id="bottomNav"></nav>
+  <button class="calendar-side-launch" id="calendarSideLaunch" type="button" onclick="openCalendar()" aria-label="Open calendar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2z"/><path d="M7 2v4M17 2v4M3 9h18"/><path d="M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg><span class="calendar-side-label">Calendar</span></button>
+</div>
+<div id="sheetHost"></div><div id="toastHost"></div>
+
+
+<script src="./js/version.js"></script>
+<script src="./js/storage.js"></script>
+<script src="./js/pdf-reader.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/integration.js"></script>
+<script src="./js/updater.js"></script>
+</body>
+</html>
