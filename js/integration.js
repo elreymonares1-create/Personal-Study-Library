@@ -4,7 +4,7 @@
  const RESUME_KEY='pwaResume:v1', activeStrokes=new Set(), boundFrames=new WeakSet();
  function bindFrame(frame){try{const doc=frame.contentDocument;if(!doc||boundFrames.has(doc))return;boundFrames.add(doc);doc.addEventListener('pointerdown',event=>{if(event.target.tagName==='CANVAS')activeStrokes.add(event.pointerId)},true);for(const name of ['pointerup','pointercancel','lostpointercapture'])doc.addEventListener(name,event=>activeStrokes.delete(event.pointerId),true)}catch(_){}}
  document.addEventListener('load',event=>{if(event.target.tagName==='IFRAME')bindFrame(event.target)},true);
- function activeModule(){return document.getElementById('moduleLaunchFrame')?.contentWindow}
+ function activeModule(){return (document.getElementById('moduleLaunchFrame')||document.getElementById('topicStudyFrame'))?.contentWindow}
  function editorOpen(){
   const sheet=document.getElementById('sheetHost');
   return !!sheet?.querySelector('input:not([type=checkbox]):not([type=range]):not([type=color]),textarea')&&!sheet.querySelector('#editNoteTitle,#quizStudy,#flashStudy');
@@ -30,7 +30,7 @@
   if(document.getElementById('editNoteTitle'))document.getElementById('editNoteTitle').dispatchEvent(new Event('input',{bubbles:true}));
   if(typeof PdfReader!=='undefined'&&PdfReader.materialId)pdfSaveReaderState();
   await StudyDataSafety.flush();
-  const resume={savedAt:now(),consumed:false,view:State.view,subjectId:State.subjectId,topicId:State.topicId,topicTool:State.topicTool,materialId:State.materialId,moduleId:typeof activeCombinedModuleId!=='undefined'?activeCombinedModuleId:null,quiz:document.getElementById('quizStudy')?structuredClone(State.quizSession):null,cards:document.getElementById('flashStudy')?structuredClone(State.cardSession):null};
+  const resume={savedAt:now(),consumed:false,view:State.view,subjectId:State.subjectId,topicId:State.topicId,topicTool:State.topicTool,materialId:State.materialId,topicStudy:document.getElementById('topicStudyFrame')?frame.StudyApp?.data.view:null,moduleId:typeof activeCombinedModuleId!=='undefined'?activeCombinedModuleId:null,quiz:document.getElementById('quizStudy')?structuredClone(State.quizSession):null,cards:document.getElementById('flashStudy')?structuredClone(State.cardSession):null};
   await setMeta(RESUME_KEY,resume);await StudyDataSafety.flush();
  }
  async function restore(){
@@ -38,7 +38,8 @@
   if(resume.subjectId&&!(await Storage.get('subjects',resume.subjectId)))return;
   if(resume.topicId&&!(await Storage.get('topics',resume.topicId)))return;
   State.subjectId=resume.subjectId;State.topicId=resume.topicId;State.topicTool=resume.topicTool;State.materialId=resume.materialId;State.view=resume.view||'home';await render();
-  if(resume.moduleId)await launchModule(resume.moduleId,true);
+  if(resume.topicStudy)await openTopicStudy(resume.topicId,resume.topicStudy);
+  else if(resume.moduleId)await launchModule(resume.moduleId,true);
   else if(resume.quiz){State.quizSession=resume.quiz;const set=await Storage.get('quizSets',resume.quiz.setId);openSheet(set?.name||'Quiz', '<div id="quizStudy"></div>');renderQuizStudy()}
   else if(resume.cards){State.cardSession=resume.cards;const set=await Storage.get('flashcardSets',resume.cards.setId);openSheet(set?.name||'Flashcards','<div id="flashStudy"></div>');renderFlashStudy()}
   await setMeta(RESUME_KEY,{...resume,consumed:true});

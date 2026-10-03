@@ -1,6 +1,12 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),crypto=require('crypto'),path=require('path');
 const root=path.resolve(__dirname,'..'),code=fs.readFileSync(root+'/js/app.js','utf8'),fingerprints=JSON.parse(fs.readFileSync(root+'/docs/preservation-fingerprints.json','utf8'));
 for(const [name,hash]of Object.entries(fingerprints)){
+ if(name==='SHARED_STUDY_ENGINE'){
+  const baseline=fs.readFileSync(root+'/recovery/shared-study-0.1.0.declaration.txt','utf8');
+  assert.equal(crypto.createHash('sha256').update(baseline).digest('hex'),hash,'recoverable original engine');
+  assert.equal(JSON.parse(code.match(/const SHARED_STUDY_ENGINE=([^\n]+);/)[1]),fs.readFileSync(root+'/js/shared-study.js','utf8'));
+  assert.equal(JSON.parse(code.match(/const UNIVERSAL_STUDY_CORE=([^\n]+);/)[1]),fs.readFileSync(root+'/js/study-core.js','utf8'));continue;
+ }
  const part=name==='BUNDLED_MODULES'?code.slice(code.indexOf('const BUNDLED_MODULES='),code.indexOf('const STORES=')):code.match(new RegExp('const '+name+'=([^\\n]+);'))[0];assert.equal(crypto.createHash('sha256').update(part).digest('hex'),hash,name+' authoritative data or engine changed');
 }
 (async()=>{
@@ -17,5 +23,5 @@ for(const [name,hash]of Object.entries(fingerprints)){
  await context.savedStorage.init();await context.savedStorage.init();assert.equal(opens,2);assert.equal(upgrades,0);
  for(const [store,row]of Object.entries(fixture)){const saved=await context.savedStorage.get(store,row.id);if(saved.blob)assert.equal(await saved.blob.text(),await row.blob.text());else assert.deepEqual(saved,row)}
  assert.equal((await context.savedStorage.all('notes')).length,2501);
- console.log('PASS: authoritative module payloads/engines and store list are unchanged; the actual storage initializer reopens the same version without migration; notes, quiz/mastery, flashcard progress, annotations and PDF Blob survive; 2,501-note library remains accessible.');
+ console.log('PASS: original academic payloads, adapters, styles and stores unchanged; recoverable engine baseline and synchronized new sources; DB version unchanged; notes, quiz/mastery, cards, annotations and PDF Blob survive; 2,501 notes accessible.');
 })().catch(error=>{console.error(error);process.exitCode=1});

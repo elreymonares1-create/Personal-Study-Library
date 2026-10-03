@@ -42,3 +42,9 @@ These are code-level tests and a real PDF-engine test, **not** full browser, phy
 8. Repeat with two open app tabs; updating one must not reload the other without its choice.
 9. Try tablet portrait and landscape, finger scrolling, stylus drawing, PDF zoom/search and a sufficiently large source.
 10. Only after these pass, treat the installed PWA as your primary study copy. Keep periodic backups.
+
+## Additional 0.2.0 study-system tests
+
+Run `node tests/study-core.cjs`, `node tests/study-engine.cjs`, `node tests/topic-study.cjs`, `node tests/backup.cjs` and `node tests/pdf-search.cjs`. These cover production retrieval rules, original-bank migration/reopening, Topic isolation and mirroring, backup validation/transaction/recovery, and per-occurrence search. `tests/pdf.cjs` now parses 100- and 320-page fixtures as well as the original raster test. `tests/integration.cjs` covers update resume for a Topic shared-engine exam too.
+
+These are automated logic/API tests, not physical Android or visual browser certification. Physical tablet checks remain required. Original academic banks/adapters/styles/store names stay hash-pinned; the authorized engine update instead checks its recoverable 0.1.0 source and source/build synchronization.

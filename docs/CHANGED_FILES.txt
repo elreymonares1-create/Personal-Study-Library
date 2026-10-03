@@ -1,0 +1,29 @@
+Compared to the delivered PWA 0.1.0 ZIP. No original academic payload files deleted.
+
+CHANGED .github/workflows/deploy.yml
+CHANGED README.md
+ADDED css/study-enhancements.css
+ADDED docs/CHANGED_FILES.txt
+ADDED docs/IMPROVEMENT_REPORT.md
+ADDED docs/TABLET_UPLOAD.md
+CHANGED docs/TESTING.md
+CHANGED index.html
+ADDED js/accessibility.js
+CHANGED js/app.js
+CHANGED js/integration.js
+ADDED js/shared-study.js
+ADDED js/study-core.js
+ADDED js/topic-study.js
+CHANGED js/version.js
+CHANGED precache-manifest.js
+ADDED recovery/shared-study-0.1.0.declaration.txt
+CHANGED service-worker.js
+ADDED tests/backup.cjs
+CHANGED tests/integration.cjs
+ADDED tests/pdf-search.cjs
+CHANGED tests/pdf.cjs
+CHANGED tests/preservation.cjs
+ADDED tests/study-core.cjs
+ADDED tests/study-engine.cjs
+ADDED tests/topic-study.cjs
+CHANGED tools/build.py

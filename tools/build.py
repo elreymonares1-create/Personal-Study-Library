@@ -3,6 +3,15 @@ from pathlib import Path
 import hashlib,json,re,shutil,argparse
 ROOT=Path(__file__).resolve().parents[1]
 def finalize(output=None):
+    # One shared source used by every bundled and Topic module, including srcdoc frames.
+    app=ROOT/'js/app.js'
+    code=app.read_text()
+    for constant,filename in [('SHARED_STUDY_ENGINE','shared-study.js'),('UNIVERSAL_STUDY_CORE','study-core.js')]:
+        declaration='const '+constant+'='+json.dumps((ROOT/'js'/filename).read_text(),ensure_ascii=True)+';'
+        pattern=r'const '+constant+r'=[^\n]+;'
+        if re.search(pattern,code):code=re.sub(pattern,lambda _:declaration,code,count=1)
+        else:code=code.replace('const SHARED_STUDY_ENGINE=',declaration+'\nconst SHARED_STUDY_ENGINE=',1)
+    app.write_text(code)
     vpath=ROOT/'js/version.js'
     version=re.search(r'APP_VERSION\s*=\s*["\']([^"\']+)',vpath.read_text()).group(1)
     files=[ROOT/'index.html',ROOT/'manifest.webmanifest',ROOT/'offline.html']

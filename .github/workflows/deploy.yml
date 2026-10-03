@@ -24,6 +24,7 @@ jobs:
       - run: python tools/build.py --output _site
       - run: python tools/verify.py
       - run: node tests/service-worker.cjs && node tests/updater.cjs && node tests/storage.cjs && node tests/preservation.cjs && node tests/integration.cjs && node tests/pdf.cjs
+      - run: node tests/study-core.cjs && node tests/study-engine.cjs && node tests/topic-study.cjs && node tests/backup.cjs && node tests/pdf-search.cjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

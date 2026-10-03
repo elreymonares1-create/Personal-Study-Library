@@ -1,0 +1,6 @@
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent,#3457d5);outline-offset:3px}
+.sheet button,.sheet select,.sheet input:not([type=checkbox]):not([type=range]):not([type=color]){min-height:44px}
+.sheet:has(#topicStudyFrame){width:min(1180px,100%);max-height:96dvh;padding:8px;overflow:hidden}
+#topicStudyFrame{display:block;background:var(--bg,#f5f6f8)}
+.sheet[role=dialog]{overscroll-behavior:contain}
+@media(min-width:900px){.sheet:has(#topicStudyFrame){margin:auto;border-radius:16px}}

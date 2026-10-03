@@ -145,3 +145,11 @@ node tests/pdf.cjs
 The worker and update manager are tested using their production code with simulated browser APIs. Storage tests reopen the actual unchanged initializer against a persistent fixture and check transaction/save errors. PDF tests run the real local library and worker; raster rendering additionally uses a local canvas implementation when available. These checks are not physical Android installation tests or browser screenshots.
 
 Chromium cannot launch in this execution sandbox (`sandbox_host_linux: shutdown: Operation not permitted`). Therefore physical installation, Chrome/Samsung/iOS behavior, visual layout, stylus input and the full installed-browser update/offline path still require the checklist in `docs/TESTING.md` on your tablet after deployment. This project has not been connected to a specific GitHub repository or deployed URL.
+
+## Study-system improvement — version 0.2.0
+
+The existing PWA now uses the shared module study interface for older Topic quizzes/cards as well. Data remains in PersonalStudyLibrary v3. Review confidence, spaced verification, misconception review, fixed balanced exams, additive recovery migrations, safer backup import and per-occurrence PDF search are included. No new PWA infrastructure is added by this study-system update.
+
+See [the complete change report](docs/IMPROVEMENT_REPORT.md), [every changed file](docs/CHANGED_FILES.txt), and [phone/tablet upload instructions](docs/TABLET_UPLOAD.md). Source coverage is honest about unmapped content; scheduling is a conservative model, not FSRS. Physical-device verification and remaining work are documented in the report.
+
+Edit `js/shared-study.js` and `js/study-core.js`, then run `python tools/build.py`. It embeds the same sources for all module launches. Do not rerun the one-time base converter over an improved project.

@@ -1,4 +1,4 @@
-// build: e273097e3a1298695258
+// build: 060e785533179d29fc3b
 'use strict';
 importScripts('./js/version.js','./precache-manifest.js');
 const SCOPE=self.registration.scope;
