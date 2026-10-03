@@ -1,16 +1,16 @@
 # Use the improved version from your phone/tablet
 
 1. Export a complete backup from your current study app and keep it on your device.
-2. Download `Personal_Study_Library_Improved_0.2.0.zip` from the conversation.
+2. Download `Personal_Study_Library_Improved_0.2.1.zip` from the conversation.
 3. GitHub repository → Add file → Upload files → select this new ZIP → Commit changes.
 4. Open the existing Codespace and its terminal. Run one line at a time:
 
 ```bash
 git pull --ff-only
-unzip Personal_Study_Library_Improved_0.2.0.zip -d /tmp/study-improved-020
-cp -R /tmp/study-improved-020/Study_Library_PWA/. .
+unzip Personal_Study_Library_Improved_0.2.1.zip -d /tmp/study-improved-021
+cp -R /tmp/study-improved-021/Study_Library_PWA/. .
 git add index.html manifest.webmanifest service-worker.js precache-manifest.js offline.html .nojekyll .gitignore .github css js assets tools tests docs recovery README.md
-git commit -m "Improve shared study system to 0.2.0"
+git commit -m "Improve shared study system to 0.2.1"
 git push
 ```
 

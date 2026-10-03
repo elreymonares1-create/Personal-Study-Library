@@ -153,3 +153,7 @@ The existing PWA now uses the shared module study interface for older Topic quiz
 See [the complete change report](docs/IMPROVEMENT_REPORT.md), [every changed file](docs/CHANGED_FILES.txt), and [phone/tablet upload instructions](docs/TABLET_UPLOAD.md). Source coverage is honest about unmapped content; scheduling is a conservative model, not FSRS. Physical-device verification and remaining work are documented in the report.
 
 Edit `js/shared-study.js` and `js/study-core.js`, then run `python tools/build.py`. It embeds the same sources for all module launches. Do not rerun the one-time base converter over an improved project.
+
+## Version 0.2.1 — one-tap files and device layouts
+
+Files and module names open directly; secondary actions stay in three-dot menus. Android/iPhone/iPad/desktop recognition is shown in App Information, while responsive layouts follow the actual viewport. See [release details](docs/RELEASE_0.2.1.md) and [current tablet upload instructions](docs/TABLET_UPLOAD.md).

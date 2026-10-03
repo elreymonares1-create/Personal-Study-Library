@@ -1,0 +1,11 @@
+.material-open,.module-open-button{display:flex;align-items:center;gap:12px;flex:1;min-width:0;min-height:64px;text-align:left;border:0;background:transparent;color:inherit;padding:8px;border-radius:10px;touch-action:manipulation;cursor:pointer}
+.material-open .list-main,.module-open-button .list-main{display:block;min-width:0}.material-open .list-title,.material-open .list-sub,.module-open-button .list-title,.module-open-button .list-sub{display:block;overflow-wrap:anywhere}
+.material-open:active,.module-open-button:active{background:var(--accent2)}
+.material-card .state-pill{flex:none}.material-card{gap:6px}
+html[data-platform=ios] input,html[data-platform=ios] select,html[data-platform=ios] textarea{font-size:max(16px,1em)}
+.topbar{padding-top:env(safe-area-inset-top)}.sheet{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+.module-launch-shell{height:100dvh;padding-top:env(safe-area-inset-top)}
+@media(max-width:599px){.material-card{flex-wrap:wrap}.material-open{flex-basis:75%;min-height:64px}.status-row .badge:first-child{display:none}.list-row{gap:7px}.module-open-button{padding:5px}.reader-text{max-width:100%;overflow-wrap:anywhere}.section-head{flex-wrap:wrap}}
+@media(min-width:600px) and (max-width:1399px){.main{padding:18px 24px}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}.reader-text{max-width:860px;margin-inline:auto}.sheet{max-width:min(960px,100%)}.material-open,.module-open-button{min-height:72px}.btn,.sheet-option{min-height:44px}}
+@media(orientation:landscape) and (max-height:600px){.sheet{max-height:94dvh}.topbar-inner{padding-block:6px}.pdf-scroll{min-height:180px}.module-launch-head{min-height:44px}}
+@media(prefers-reduced-motion:reduce){.view{animation:none}html{scroll-behavior:auto}}
